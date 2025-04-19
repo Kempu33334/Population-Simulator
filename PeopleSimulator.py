@@ -65,7 +65,7 @@ slider_axes = {
 
 # Sliders
 sliders = {
-    'initialpopulation': Slider(slider_axes['initialpopulation'], 'Initial Pop', 100, 10000, valinit=initialpopulation, valstep=100),
+    'initialpopulation': Slider(slider_axes['initialpopulation'], 'Initial Pop', 10, 100000, valinit=initialpopulation, valstep=10),
     'initialfood': Slider(slider_axes['initialfood'], 'Initial Food', 10000, 500000, valinit=initialfood, valstep=1000),
     'foodconsumption': Slider(slider_axes['foodconsumption'], 'Food per Person', 1, 50, valinit=foodconsumption),
     'farmerpercent': Slider(slider_axes['farmerpercent'], 'Farmer %', 0, 100, valinit=farmerpercent),
