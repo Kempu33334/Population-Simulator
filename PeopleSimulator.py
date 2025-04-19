@@ -12,6 +12,7 @@ rateoffood = 20
 deathrate = 10
 reproductionrate = 1.2
 num_years = 100
+variation = 0.005
 
 print('Food per person is amount of food consumed per person')
 print('Farmer % is percentage of people creating food')
@@ -21,14 +22,14 @@ print('Reprodcution Rate is multiplication factor of population')
 print('*NOTE* A little inherit randomness is included, so results won\'t be exactly the same everytime')
 
 # Simulation function (fixed parameter name)
-def simulate(initialpopulation, initialfood, foodconsumption, farmerpercent, rateoffood, deathrate, reproductionrate, num_years):
+def simulate(initialpopulation, initialfood, foodconsumption, farmerpercent, rateoffood, deathrate, reproductionrate, num_years, variation):
     time = [0]
     population = [initialpopulation]
     food = [initialfood]
 
     for i in range(int(num_years)):
-        food.append(2/3*max(1, food[-1] + farmerpercent / 100 * population[-1] * rateoffood - population[-1] * foodconsumption))
-        population.append(random.uniform(0.995, 1.005)*
+        food.append(random.uniform(1-variation, 1+variation)*2/3*max(1, food[-1] + farmerpercent / 100 * population[-1] * rateoffood - population[-1] * foodconsumption))
+        population.append(random.uniform(1-variation, 1+variation)*
             population[-1] * (1 - deathrate / 100) * reproductionrate -
             max(0, population[-1] - food[-1] / foodconsumption)
         )
@@ -36,7 +37,7 @@ def simulate(initialpopulation, initialfood, foodconsumption, farmerpercent, rat
     return time, population
 
 # Initial simulation
-time, population = simulate(initialpopulation, initialfood, foodconsumption, farmerpercent, rateoffood, deathrate, reproductionrate, num_years)
+time, population = simulate(initialpopulation, initialfood, foodconsumption, farmerpercent, rateoffood, deathrate, reproductionrate, num_years, variation)
 
 # Plot setup
 fig, ax = plt.subplots()
@@ -59,6 +60,7 @@ slider_axes = {
     'deathrate': plt.axes([0.25, 0.28, 0.65, 0.03], facecolor=axcolor),
     'reproductionrate': plt.axes([0.25, 0.24, 0.65, 0.03], facecolor=axcolor),
     'num_years': plt.axes([0.25, 0.20, 0.65, 0.03], facecolor=axcolor),
+    'variation': plt.axes([0.25, 0.16, 0.65, 0.03], facecolor=axcolor),
 }
 
 # Sliders
@@ -70,7 +72,8 @@ sliders = {
     'rateoffood': Slider(slider_axes['rateoffood'], 'Food Rate', 1, 100, valinit=rateoffood),
     'deathrate': Slider(slider_axes['deathrate'], 'Death Rate %', 0, 100, valinit=deathrate),
     'reproductionrate': Slider(slider_axes['reproductionrate'], 'Reproduction Rate', 0.5, 3.0, valinit=reproductionrate),
-    'num_years': Slider(slider_axes['num_years'], 'Years', 10, 500, valinit=num_years, valstep=1),
+    'num_years': Slider(slider_axes['num_years'], 'Years', 10, 1000, valinit=num_years, valstep=1),
+    'variation': Slider(slider_axes['variation'], 'Variation', 0, 0.4, valinit=variation, valstep=0.001),
 }
 
 # Update function
