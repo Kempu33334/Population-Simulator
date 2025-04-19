@@ -73,7 +73,7 @@ sliders = {
     'deathrate': Slider(slider_axes['deathrate'], 'Death Rate %', 0, 100, valinit=deathrate),
     'reproductionrate': Slider(slider_axes['reproductionrate'], 'Reproduction Rate', 0.5, 3.0, valinit=reproductionrate),
     'num_years': Slider(slider_axes['num_years'], 'Years', 10, 1000, valinit=num_years, valstep=1),
-    'variation': Slider(slider_axes['variation'], 'Variation', 0, 0.4, valinit=variation, valstep=0.001),
+    'variation': Slider(slider_axes['variation'], 'Variation', 0, 0.5, valinit=variation, valstep=0.001),
 }
 
 # Update function
