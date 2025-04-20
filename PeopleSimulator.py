@@ -28,11 +28,10 @@ def simulate(initialpopulation, initialfood, foodconsumption, farmerpercent, rat
     food = [initialfood]
 
     for i in range(int(num_years)):
-        food.append(random.uniform(1-variation, 1+variation)*2/3*max(1, food[-1] + farmerpercent / 100 * population[-1] * rateoffood - population[-1] * foodconsumption))
-        population.append(random.uniform(1-variation, 1+variation)*
+        food.append(max(0,random.uniform(1-variation, 1+variation)*2/3*food[-1] + farmerpercent / 100 * population[-1] * rateoffood - population[-1] * foodconsumption))
+        population.append(max(0,(random.uniform(1-variation, 1+variation)*
             population[-1] * (1 - deathrate / 100) * reproductionrate -
-            max(0, population[-1] - food[-1] / foodconsumption)
-        )
+            max(0, population[-1] - food[-1] / foodconsumption))))
         time.append(i + 1)
     return time, population
 
@@ -40,7 +39,7 @@ def simulate(initialpopulation, initialfood, foodconsumption, farmerpercent, rat
 time, population = simulate(initialpopulation, initialfood, foodconsumption, farmerpercent, rateoffood, deathrate, reproductionrate, num_years, variation)
 
 # Plot setup
-fig, ax = plt.subplots()
+fig, ax = plt.subplots(figsize=(8, 8))
 plt.subplots_adjust(left=0.25, bottom=0.55)
 line, = ax.plot(time, population, 'b-', label='Population')
 ax.set_xlabel('Years')
@@ -65,12 +64,12 @@ slider_axes = {
 
 # Sliders
 sliders = {
-    'initialpopulation': Slider(slider_axes['initialpopulation'], 'Initial Pop', 10, 100000, valinit=initialpopulation, valstep=10),
+    'initialpopulation': Slider(slider_axes['initialpopulation'], 'Initial Population', 10, 100000, valinit=initialpopulation, valstep=10),
     'initialfood': Slider(slider_axes['initialfood'], 'Initial Food', 10000, 500000, valinit=initialfood, valstep=1000),
     'foodconsumption': Slider(slider_axes['foodconsumption'], 'Food per Person', 1, 50, valinit=foodconsumption),
     'farmerpercent': Slider(slider_axes['farmerpercent'], 'Farmer %', 0, 100, valinit=farmerpercent),
     'rateoffood': Slider(slider_axes['rateoffood'], 'Food Rate', 1, 100, valinit=rateoffood),
-    'deathrate': Slider(slider_axes['deathrate'], 'Death Rate %', 0, 100, valinit=deathrate),
+    'deathrate': Slider(slider_axes['deathrate'], 'Natural Death Rate %', 0, 100, valinit=deathrate),
     'reproductionrate': Slider(slider_axes['reproductionrate'], 'Reproduction Rate', 0.5, 3.0, valinit=reproductionrate),
     'num_years': Slider(slider_axes['num_years'], 'Years', 10, 1000, valinit=num_years, valstep=1),
     'variation': Slider(slider_axes['variation'], 'Variation', 0, 0.5, valinit=variation, valstep=0.001),
